@@ -1,7 +1,7 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
-from fastapi_invoice import load_invoices, router as invoice_router
+from fastapi_invoice.fastapi_invoice import load_invoices, router as invoice_router
 
 
 @asynccontextmanager
