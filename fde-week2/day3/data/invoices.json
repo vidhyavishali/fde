@@ -1,0 +1,11 @@
+ [
+    {"invoice_id": "101", "vendor": "ABC Ltd",  "amount": 85000,   "status": "PENDING", "date": "2026-09-03", "deleted":"false"},
+    {"invoice_id": "102", "vendor": "xyz corp", "amount": 142500,  "status": "pending", "date": "2026-09-05","deleted":"false"},
+    {"invoice_id": "101", "vendor": "ABC Ltd",  "amount": 85000,   "status": "PENDING", "date": "2026-09-03","deleted":"false"},
+    {"invoice_id": "103", "vendor": "Globex",   "amount": -550000, "status": "PENDING", "date": "2026-09-07","deleted":"false"},
+    {"invoice_id": "104", "vendor": "ABC Ltd ", "amount": 62000,   "status": "PAID",    "date": "2026-09-08","deleted":"false"},
+    {"invoice_id": "102", "vendor": "XYZ Corp", "amount": 150000,  "status": "PENDING", "date": "2026-09-12","deleted":"false"},
+    {"invoice_id": "105", "vendor": "Globex",   "amount": 550000,  "status": "PENDING", "date": "2026-09-09","deleted":"false"},
+    {"invoice_id": "106", "vendor": "Initech",  "amount": null,    "status": "PENDING", "date": "2026-09-15","deleted":"false"},
+    {"invoice_id": "107", "vendor": "ABC Ltd",  "amount": 85000,   "status": "PENDING", "date": "2026-09-03","deleted":"false"}
+]

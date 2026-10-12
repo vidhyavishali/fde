@@ -1,0 +1,9 @@
+
+[
+  {"invoice_id": "INV-101", "vendor": "ABC Ltd", "amount": 85000},
+  {"invoice_id": "INV-102", "vendor": "XYZ Corp", "amount": 142500},
+  {"invoice_id": "INV-103", "vendor": "ABC Ltd", "amount": 62000},
+  {"invoice_id": "INV-101", "vendor": "ABC Ltd", "amount": 85000},
+  {"invoice_id": "INV-104", "vendor": "Globex", "amount": 31000},
+  {"invoice_id": "INV-102", "vendor": "XYZ Corp", "amount": 142500}
+]

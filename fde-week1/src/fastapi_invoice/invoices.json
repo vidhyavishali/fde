@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "customer": "Max M\u00c3\u00bcller",
+        "amount": 5000,
+        "status": "pending"
+    },
+    {
+        "id": 2,
+        "customer": "drek Ramson",
+        "amount": 5000,
+        "status": "approved"
+    },
+    {
+        "id": 3,
+        "customer": "John Meyer",
+        "amount": 5000000,
+        "status": "rejected"
+    },
+    {
+        "id": 4,
+        "customer": "Jux Johns",
+        "amount": 80000,
+        "status": "approved"
+    }
+]

@@ -1,0 +1,14 @@
+import requests  #( used in case of rest service consumer)
+
+from pprint import pprint
+URL = "https://jsonplaceholder.typicode.com/users"
+response = requests.get(URL)
+print(response.status_code)
+responsejson = response.json()
+#pprint(responsejson)   #similar to pretty print, but for JSON data. It formats the JSON data in a more readable way.
+for user in responsejson:
+    company = user['company']
+    phone = user['phone']
+    parts = phone.split('x')  # Split the phone number at 'x' and take the first part
+    extension = parts[1] if len(parts) > 1 else "N/A"
+    print(f"Name: {user['name']}, Email: {user['email']}, Extension : {extension}, Phone: {parts[0]}, Company: {company['name']}")
