@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+            }
+            h1 {
+                color: #333;
+            }
+            form div {
+                margin-bottom: 10px;
+            }
+            form {
+                margin-top: 20px;
+                background-color: #f9f9f9;
+            }
+            label {
+                display: inline-block;
+                width: 100px;
+            }
+            input {
+                padding: 5px;
+                width: 200px;
+            }
+            button {
+                padding: 10px 20px;
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                cursor: pointer;
+            }
+            button:hover {
+                background-color: #45a049;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            table, th, td {
+                border: 1px solid black;
+            }
+            th, td {
+                padding: 10px;
+                text-align: left;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Diabetics Patient Management</h1>
+        <div>
+            <h2>Add Patient Encounter</h2>
+        </div>
+        <section id="add-encounter">
+            <form id="encounter-form">
+              <div>
+                <label for="patient-number">Patient ID:</label>
+                <input type="text" id="patient-number" name="patient-number" required>
+              </div>
+              <div>
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="age" required> </div>
+              <div> 
+                <label for="risklevel">Risk Level:</label>
+                <input type="text" id="risklevel" name="risklevel" required>
+              </div>
+              <div>
+                <label for="status">Status:</label>
+                <input type="text" id="status" name="status" required>
+              </div>
+              <button type="submit">Add Encounter</button>
+            </form> 
+        </section>
+        <section id="Encounters">
+            <div>
+                <h2>All Encounters</h2>
+            </div>
+            <div id="encounters-list">
+          <table>
+            <thead>
+              <tr>
+                <th>Patient ID</th>
+                <th>Age</th>
+                <th>Risk Level</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Encounters will be dynamically populated here -->
+            </tbody>
+          </table>
+            </div>
+        </section>
+    </body>
+</html>

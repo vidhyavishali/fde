@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Search Encounter</title>
+        <link rel="stylesheet" href="index.css">
+    </head>
+    <body>
+         <body>
+        <h1>Diabetics Patient Management</h1>
+         <section id="search-encounter">
+            <h2>Search Patient Encounter</h2>
+            <form id="search-form">
+              <div>
+                <label for="patient-number">Patient Number  :</label>
+                <input type="text" id="patient-number" name="patient-number">
+              </div>
+              <div>
+                <label for="risklevel">Risk Level:</label>
+                <select id="risklevel" name="risklevel">
+                    <option value="">Select Risk Level</option>
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                </select>
+              </div>
+              <div>
+                <label for="riskscore">Risk Score:</label>
+                <input type="number" id="riskscore" name="riskscore">
+              </div>
+              <button type="submit">Search Encounter</button>
+            </form> 
+        </section>
+        <section id="Encounters">
+            <div>
+                <h2>Search Results</h2>
+            </div>
+            <div id="results-list">
+                <table>
+                    <thead>
+                        <tr>
+               
+                           <th>Encounter ID</th>
+                           <th>Patient Number</th>
+                           <th>Age</th>
+                           <th>Time in Hospital</th>
+                           <th>Inpatient Visits</th>
+                           <th>Outpatient Visits</th>
+                           <th>Emergency Visits</th>
+                           <th>Medications</th>
+                           <th>Readmitted</th>
+                           <th>Risk Score</th>
+                           <th>Risk Level</th>
+                       </tr>
+                    </thead>
+                    <tbody id="encounters-table-body">
+                        <!-- Search results will be dynamically populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <script>
+           async function searchEncounter(event) {
+                event.preventDefault();
+                const params = new URLSearchParams();
+                const patientNumber = document.getElementById('patient-number').value;
+                const riskLevel = document.getElementById('risklevel').value;
+                const riskScore = document.getElementById('riskscore').value;
+                if(patientNumber)
+                params.append('patient_number', patientNumber);
+                if(riskLevel)
+                params.append('risk_level', riskLevel);
+                if(riskScore)
+                params.append('risk_score', riskScore);
+                const response = await fetch(`http://127.0.0.1:8000/patient/search?${params.toString()}`);
+                const data = await response.json();
+                        if (!response.ok) {
+                    const error = await response.json();
+                    console.log(error);
+                }
+                console.log('Searching encounters with:', { patientNumber, riskLevel, riskScore });
+                const tableBody = document.getElementById('encounters-table-body');
+                tableBody.innerHTML = '';
+                data.forEach(encounter => {
+                    const row = document.createElement('tr'); 
+                    row.innerHTML = `
+                        <td>${encounter.encounter_id}</td>
+                        <td>${encounter.patient_nbr}</td>
+                        <td>${encounter.age}</td>
+                        <td>${encounter.time_in_hospital}</td>
+                        <td>${encounter.number_inpatient}</td>
+                        <td>${encounter.number_outpatient}</td>
+                        <td>${encounter.number_emergency}</td>
+                        <td>${encounter.num_medications}</td>
+                        <td>${encounter.readmitted}</td>
+                        <td>${encounter.risk_score}</td>
+                        <td>${encounter.risk_level}</td>
+                    `;
+                    row.addEventListener('click', () => openEncounter(encounter.encounter_id, encounter.patient_nbr)); // clickable row
+                    tableBody.appendChild(row);
+                }); 
+            }  
+        
+
+            // adding the event to the dom element
+            document.getElementById('search-form').addEventListener('submit', searchEncounter);
+
+
+            //redirecting to update care page
+            function openEncounter(encounterId, patientNumber) {
+                console.log('Opening encounter:', { encounterId, patientNumber });
+                 window.location.href =
+        `update_to_care.html?encounterId=${encounterId}&patientNumber=${patientNumber}`;
+            }
+
+                 
+
+        </script>
+    </body>
+</html>

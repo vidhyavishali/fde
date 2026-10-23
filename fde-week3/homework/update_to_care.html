@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Update Care</title>
+        <link rel="stylesheet" href="index.css">
+    </head>
+    <body>
+        <h1>Diabetics Patient Management</h1>
+        <section id="update-care">
+            <h2>Update Patient Care</h2>
+            <form id="update-care-form">
+                <div>
+                    <input type="hidden" id="intervention-id" name="intervention-id">
+                    <label for="encounter-id">Encounter ID:</label>
+                    <input type="text" id="encounter-id" name="encounter-id" >
+                    </div>
+                    <div>
+                    <label for="patient-number">Patient Number:</label>
+                    <input type="text" id="patient-number" name="patient-number" required>
+                </div>
+
+                <div>
+                    <label for="status">Status:</label>
+                    <select id="status" name="status" required>
+                        <option value="">Select Status</option>
+                        <option value="ASSIGNED">Active</option>
+                        <option value="NOT ASSIGNED">Inactive</option>
+                        <option value="PENDING">Pending</option>
+                         <option value="DISCHARGED">Discharged</option>
+                    </select>
+                 </div>
+                <div>
+                    <label for="assigned-to">Assigned To:</label>
+                    <input type="text" id="assigned-to" name="assigned-to">
+                </div>
+                <div>
+                    <label for="Notes">Notes:</label>
+                    <textarea id="Notes" name="Notes"></textarea>
+                </div>
+                <button type="submit">Update Care</button>
+            </form>
+        </section>
+
+        <script>
+
+// Get the encounter ID from the URL parameters. This script provides an interface that allows pre-filling the form with existing encounter data.
+           const params = new URLSearchParams(window.location.search);
+           const encounterId = params.get("encounterId");
+           const patientNumber = params.get("patientNumber")
+             document.getElementById('encounter-id').value = encounterId;
+        document.getElementById('patient-number').value = patientNumber;
+                
+           if (encounterId) {
+               (async () => {
+                   const intervention = await fetchEncounterIntervention(encounterId);
+                   if (intervention) {
+                       populateForm(intervention);
+                   } 
+               })();
+           }
+
+
+            
+async function fetchEncounterIntervention(encounterId) {
+       console.log(encounterId); 
+        const response = await fetch(`http://127.0.0.1:8000/interventions/${encounterId}`);
+
+        if (response.status === 404) {
+            return null;
+        }
+
+        if (!response.ok) {
+            throw new Error(`Request failed with status ${response.status}`);
+        }
+
+        return await response.json();
+}
+
+
+
+function populateForm(encounter) {
+    document.getElementById('intervention-id').value = encounter.intervention_id;
+    document.getElementById('status').value = encounter.status;
+    document.getElementById('assigned-to').value = encounter.assigned_to || '';
+    document.getElementById('Notes').value = encounter.notes || '';
+}
+
+async function handleUpdateCare(event) {
+    event.preventDefault();
+
+    const interventionId =
+        document.getElementById('intervention-id').value;
+
+    const payload = {
+        encounter_id:
+            document.getElementById('encounter-id').value,
+
+        status:
+            document.getElementById('status').value,
+
+        assigned_to:
+            document.getElementById('assigned-to').value,
+
+        notes:
+            document.getElementById('Notes').value
+    };
+
+    console.log('Saving care:', payload);
+
+    try {
+        let response;
+
+        if (interventionId) {
+
+            // UPDATE
+            response = await fetch(
+                `http://127.0.0.1:8000/interventions/${interventionId}/update`,
+                {
+                    method: 'PUT', // or PUT, depending on your API
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                }
+            );
+
+        } else {
+
+            // CREATE
+            response = await fetch(
+                `http://127.0.0.1:8000/interventions/${payload.encounter_id}`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                }
+            );
+        }
+
+        if (!response.ok) {
+            const error = await response.json();
+            console.error(error);
+
+            alert(error.detail || 'Save failed');
+            return;
+        }
+
+        const data = await response.json();
+
+        console.log('Save successful:', data);
+
+        alert('Encounter saved successfully');
+
+        document.getElementById('update-care-form').reset();
+
+    } catch (error) {
+        console.error('Error saving care:', error);
+        alert('An unexpected error occurred');
+    }
+}
+
+      document.getElementById('update-care-form').addEventListener('submit', handleUpdateCare);
+   
+
+
+      
+
+        </script>
+    </body>
+</html>

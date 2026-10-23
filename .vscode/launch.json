@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Patientcare API (uvicorn)",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "uvicorn",
+            "args": ["app.main:app", "--reload"],
+            "cwd": "${workspaceFolder}/fde-patientcare/backend",
+            "env": { "PYTHONPATH": "${workspaceFolder}/fde-patientcare/backend" },
+            "python": "${workspaceFolder}/fde-patientcare/.venv/Scripts/python.exe",
+            "justMyCode": true
+        },
+        {
+            "name": "Patientcare: import dataset",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "scripts.import_dataset",
+            "cwd": "${workspaceFolder}/fde-patientcare/backend",
+            "env": { "PYTHONPATH": "${workspaceFolder}/fde-patientcare/backend" },
+            "python": "${workspaceFolder}/fde-patientcare/.venv/Scripts/python.exe"
+        }
+    ]
+}

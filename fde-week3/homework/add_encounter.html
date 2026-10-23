@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Diabetics Patient Management</title>
+        <link rel="stylesheet" href="index.css">
+    </head>
+    <body>
+        <h1>Diabetics Patient Management</h1>
+         <section id="add-encounter">
+        <div>
+            <h2>Add Patient Encounter</h2>
+        </div>
+            <form id="encounter-form">
+                <div>
+                    <label for="patient-number">Patient Number:</label> </div>
+                 <div>
+                     <input type="text" id="patient-number" name="patient-number" required>  
+                </div>
+                <div>
+                    <label for="age">Age:</label> </div>
+                 <div>
+                    <select id="age" name="age" required>
+                        <option value="">Age group</option>
+                        <option value="0-18">0-18</option>
+                        <option value="19-35">19-35</option>
+                        <option value="36-50">36-50</option>
+                        <option value="51-65">51-65</option>
+                        <option value="66+">66+</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="in-hospital-days">Time in Hospital (Days):</label> </div>
+                 <div>
+                    <input type="text" id="in-hospital-days" name="in-hospital-days" required>
+                </div>
+                <div>
+                    <label for="inpatient-visits">Inpatient Visits:</label> </div>
+                 <div>
+                    <input type="text" id="inpatient-visits" name="inpatient-visits" required>
+                </div>
+                 <div>
+                    <label for="outpatient-visits">Outpatient Visits:</label> </div>
+                 <div>
+                    <input type="text" id="outpatient-visits" name="outpatient-visits" required>
+                </div>
+                <div>
+                    <label for="emergency-visits">Emergency Visits:</label> </div>
+                 <div>
+                    <input type="text" id="emergency-visits" name="emergency-visits" required>
+                </div>
+                <div>
+                    <label for="medications">Medications:</label> </div>    
+                 <div>
+                    <input type="text" id="medications" name="medications" required>
+                </div>
+                <button type="submit">Add Encounter</button>
+            </form>
+
+        </section>
+        <section id="Encounters">
+            <div>
+                <h2>All Encounters</h2>
+            </div>
+            <div id="encounters-list">
+               <table>
+                   <thead>
+                       <tr>
+                           <th>Encounter ID</th>
+                           <th>Patient Number</th>
+                           <th>Age</th>
+                           <th>Time in Hospital</th>
+                           <th>Inpatient Visits</th>
+                           <th>Outpatient Visits</th>
+                           <th>Emergency Visits</th>
+                           <th>Medications</th>
+                           <th>Readmitted</th>
+                           <th>Risk Score</th>
+                           <th>Risk Level</th>
+                       </tr>
+                   </thead>
+                   <tbody id="encounters-table-body">
+                   </tbody>
+               </table>
+                
+            </div>
+        </section>
+<script >
+   
+    async function loadEncounters() { 
+        const response = await fetch('http://127.0.0.1:8000/encounters')
+        const data = await response.json()
+        console.log(data)
+        document.getElementById("encounters-table-body").innerHTML = data.map(encounter => `
+            <tr>
+                <td>${encounter.encounter_id}</td>
+                <td>${encounter.patient_nbr}</td>
+                <td>${encounter.age}</td>
+                <td>${encounter.time_in_hospital}</td>
+                <td>${encounter.number_inpatient}</td>
+                <td>${encounter.number_outpatient}</td>
+                <td>${encounter.number_emergency}</td>
+                <td>${encounter.num_medications}</td>
+                <td>${encounter.readmitted ?? ""}</td>
+                <td>${encounter.risk_score}</td>
+                <td>${encounter.risk_level}</td>
+            </tr>
+        `).join('')
+    }
+
+      async function addEncounter(event) {
+          event.preventDefault();
+          const formData = new FormData(event.target);
+          const data = {
+              patient_number: formData.get('patient-number'),
+              age: formData.get('age'),
+              in_hospital_days: formData.get('in-hospital-days'),
+              inpatient_visits: formData.get('inpatient-visits'),
+              outpatient_visits: formData.get('outpatient-visits'),
+              emergency_visits: formData.get('emergency-visits'),
+              medications: formData.get('medications')
+          };
+
+          const response = await fetch('http://127.0.0.1:8000/encounters', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(data)
+          });
+
+      if (response.ok) {
+        alert("Encounter saved successfully");
+
+        document.getElementById("encounter-form").reset();
+
+        loadEncounters();
+    } else {
+        const errorData = await response.json();
+        console.error(errorData);
+        alert("Failed to save encounter");
+    }
+      }
+
+    window.addEventListener('DOMContentLoaded', loadEncounters);
+    document.getElementById("encounter-form").addEventListener("submit", addEncounter);
+
+
+  
+ 
+</script>
+    </body>
+</html>

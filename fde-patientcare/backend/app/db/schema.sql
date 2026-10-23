@@ -1,17 +1,15 @@
-DROP TABLE IF EXISTS care_interventions;
-DROP TABLE IF EXISTS patient_encounters;
 
 CREATE TABLE patient_encounters (
     encounter_id        BIGSERIAL PRIMARY KEY,
     patient_nbr         VARCHAR(50) NOT NULL,
-    age                 INTEGER,
+    age                 VARCHAR(20),
     time_in_hospital    INTEGER,
     number_inpatient    INTEGER,
     number_emergency    INTEGER,
     number_outpatient   INTEGER,
     num_medications     INTEGER,
-    readmitted          BOOLEAN DEFAULT FALSE,
-    risk_score          NUMERIC(5,2),
+    readmitted          VARCHAR(50),
+    risk_score          INTEGER,
     risk_level          VARCHAR(20)
 );
 
@@ -24,6 +22,7 @@ CREATE TABLE care_interventions (
     assigned_to         VARCHAR(100),
     notes               TEXT,
 
+    CONSTRAINT uq_care_interventions_encounter UNIQUE (encounter_id),
     CONSTRAINT fk_care_interventions_encounter
         FOREIGN KEY (encounter_id)
         REFERENCES patient_encounters(encounter_id)
